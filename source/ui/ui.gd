@@ -60,21 +60,18 @@ func update_scan() -> void:
 			scan_button.disabled = false
 
 		progress_bar.value = selected_ship.progress_bar.value
-
 		var cargo_info = selected_ship.cargo_info
 		var num_holds = cargo_info.size()
 		var holds_to_display = int(progress_bar.value / 100.0 * num_holds)
 		var cargo_details_text: String = ""
 		var hold_index = 0
-		for cargo_hold in cargo_info.keys():
+		for cargo_hold_name in cargo_info.keys():
 			if hold_index >= holds_to_display:
 				break
-			cargo_details_text += cargo_hold + ":\n"
-
-			for item in cargo_info[cargo_hold].keys():
-				cargo_details_text += "  " + item + ": " + str(cargo_info[cargo_hold][item]) + "\n"
-			hold_index += 1
-		cargo_details.text = cargo_details_text.strip_edges()
+			var cargo_hold: CargoHold = cargo_info[cargo_hold_name]
+			cargo_details_text += cargo_hold_name + ":\n" + cargo_hold.get_manifest() + "\n"
+			cargo_details.text = cargo_details_text.strip_edges()
+			hold_index+= 1
 	else:
 		scan_button.text = "Scan"
 		scan_button.disabled = true
